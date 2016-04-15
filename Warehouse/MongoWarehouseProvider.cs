@@ -69,7 +69,7 @@ namespace DataWarehouse
             var filter = MiningCompiler.ComposeFilter(question);
             return filter?.And?.ToMongoDatabaseFilter();
         }
-
+                
         public void StoreInformation(Dictionary<string, IEnumerable<object>> information)
         {
             var hashcode = information.GetInformationHashcode();
