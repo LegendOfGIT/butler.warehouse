@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using RabbitMQ.Client.MessagePatterns;
 
 namespace DataWarehouse.Queing
@@ -35,7 +36,7 @@ namespace DataWarehouse.Queing
               while(true)
               {
                 var eventArgs = subscription.Next();
-                var content = Encoding.UTF8.GetString(eventArgs.Body);
+                var content = eventArgs == null ? string.Empty : Encoding.UTF8.GetString(eventArgs.Body);
                 subscription.Ack(eventArgs);
 
                 callback(content);
@@ -46,13 +47,9 @@ namespace DataWarehouse.Queing
       )});
     }
 
-    public static void Sample(string body)
-    {
-
-    }
     public static void Store(string body)
     {
-
+      var information = JsonConvert.DeserializeObject<Dictionary<string, IEnumerable<object>>>(body);
     }
   }
 }
